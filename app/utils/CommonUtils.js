@@ -17,11 +17,25 @@ import { fetchAddress } from '../redux/actions/address';
 const baseURL = require('../../app.json').webUrl;
 
 const sizes = Array(26).fill('').map((v, i) => i / 2 + 35.5);
-export const debounce = (fun, delay = 1000) => (...params) => {
-  if (!fun.timer || Date.now() - fun.timer > delay) {
-    fun.timer = Date.now();
-    fun(...params);
-  }
+
+export const debounce = (fun, delay = 1000) => {
+  let timer = 0;
+  return function () {
+    if (Date.now() - timer > delay) {
+      fun();
+      timer = Date.now();
+    }
+  };
+};
+
+export const debounceDelay = (fun, delay = 350) => {
+  let timer = null;
+  return function (...params) {
+    timer && clearTimeout(timer);
+    timer = setTimeout(() => {
+      fun(...params);
+    }, delay);
+  };
 };
 
 export const changeVersion = (text) => {
@@ -45,15 +59,6 @@ export const changeVersion = (text) => {
       },
     ]);
   }
-};
-
-export const debounceDelay = (fun, delay = 350) => (...params) => {
-  if (fun.timer) {
-    clearTimeout(fun.timer);
-  }
-  fun.timer = setTimeout(() => {
-    fun(...params);
-  }, delay);
 };
 
 export const splitPhone = (str) => {

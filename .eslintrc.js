@@ -15,6 +15,7 @@ module.exports = {
     'no-restricted-syntax': 0,
     'import/no-cycle': 0,
     radix: 0,
+    'func-names', 0,
     'no-shadow': 'off',
     'no-param-reassign': 0,
     'no-plusplus': 0,
